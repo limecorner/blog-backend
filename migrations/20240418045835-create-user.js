@@ -27,7 +27,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       permission: {
-        type: Sequelize.STRING
+        type: Sequelize.ENUM('login', 'member')
       },
       created_at: {
         allowNull: false,

@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
     password: DataTypes.STRING,
     bio: DataTypes.STRING,
     photo: DataTypes.STRING,
-    permission: DataTypes.STRING
+    permission: DataTypes.ENUM('login', 'member')
   }, {
     sequelize,
     modelName: 'User',
