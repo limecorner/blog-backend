@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const { User } = require('../models')
+const { saltRounds } = require('../helpers/auth-helpers')
 
 const userController = {
   signUp: async (req, res, next) => {
@@ -11,7 +12,6 @@ const userController = {
       const user = await User.findOne({ where: { email } })
       if (user) throw new Error('Email 已經存在')
 
-      const saltRounds = 10
       const hash = await bcrypt.hash(password, saltRounds)
       const newUser = await User.create({
         name,

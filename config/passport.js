@@ -1,6 +1,7 @@
 const passport = require('passport')
 const LocalStrategy = require('passport-local')
 const passportJWT = require('passport-jwt')
+const bcrypt = require('bcryptjs')
 const { User } = require('../models')
 
 const JWTStrategy = passportJWT.Strategy
@@ -14,7 +15,9 @@ passport.use(new LocalStrategy(
   async (email, password, cb) => {
     try {
       const user = await User.findOne({ where: { email } })
-      if (!user || password !== user.password) throw new Error('帳號或密碼錯誤。')
+      if (!user) throw new Error('帳號或密碼錯誤')
+      const isPasswordCorrect = await bcrypt.compare(password, user.password)
+      if (!isPasswordCorrect) throw new Error('帳號或密碼錯誤')
       cb(null, user.toJSON())
     } catch (err) {
       cb(err)
