@@ -1,5 +1,33 @@
 const jwt = require('jsonwebtoken')
+const bcrypt = require('bcryptjs')
+const { User } = require('../models')
+
 const userController = {
+  signUp: async (req, res, next) => {
+    try {
+      const { name, email, password, passwordCheck } = req.body
+      if (password !== passwordCheck) throw new Error('兩次輸入的密碼不同')
+
+      const user = await User.findOne({ where: { email } })
+      if (user) throw new Error('Email 已經存在')
+
+      const saltRounds = 10
+      const hash = await bcrypt.hash(password, saltRounds)
+      const newUser = await User.create({
+        name,
+        email,
+        password: hash
+      })
+      res.json({
+        status: 'success',
+        data: {
+          user: newUser
+        }
+      })
+    } catch (err) {
+      next(err)
+    }
+  },
   signIn: (req, res, next) => {
     try {
       const userData = req.user
