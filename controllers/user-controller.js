@@ -7,6 +7,11 @@ const userController = {
   signUp: async (req, res, next) => {
     try {
       const { name, email, password, passwordCheck } = req.body
+      if (!name.trim() ||
+        !email.trim() ||
+        !password.trim() ||
+        !passwordCheck.trim()
+      ) { throw new Error('所有欄位必填') }
       if (password !== passwordCheck) throw new Error('兩次輸入的密碼不同')
 
       const user = await User.findOne({ where: { email } })
