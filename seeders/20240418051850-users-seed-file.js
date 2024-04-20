@@ -11,12 +11,13 @@ const getRandomPermission = () => {
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.bulkInsert('Users', [{
-      email: 'root@gmail.com',
+      email: 'boss@gmail.com',
       password: await bcrypt.hash('123', saltRounds),
       name: 'root',
       bio: 'root',
       photo: 'https://loremflickr.com/320/240/avatar',
       permission: getRandomPermission(),
+      role: 'admin',
       created_at: new Date(),
       updated_at: new Date()
     }, {
@@ -26,6 +27,7 @@ module.exports = {
       bio: 'user1',
       photo: 'https://loremflickr.com/320/240/avatar',
       permission: getRandomPermission(),
+      role: 'user',
       created_at: new Date(),
       updated_at: new Date()
     }, {
@@ -35,6 +37,7 @@ module.exports = {
       bio: 'user2',
       photo: 'https://loremflickr.com/320/240/avatar',
       permission: getRandomPermission(),
+      role: 'user',
       created_at: new Date(),
       updated_at: new Date()
     }], {})
