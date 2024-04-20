@@ -13,8 +13,8 @@ module.exports = {
     await queryInterface.bulkInsert('Users', [{
       email: 'boss@gmail.com',
       password: await bcrypt.hash('123', saltRounds),
-      name: 'root',
-      bio: 'root',
+      name: 'boss',
+      bio: 'boss',
       photo: 'https://loremflickr.com/320/240/avatar',
       permission: getRandomPermission(),
       role: 'admin',
