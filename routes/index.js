@@ -2,7 +2,7 @@ const express = require('express')
 const { errorHandler } = require('../middleware/error-handler')
 const router = express.Router()
 
-const { authLocal, authenticatedAdmin, authenticatedUser } = require('../middleware/auth')
+const { authLocal, authenticatedAdmin, authenticatedUser, authJWT } = require('../middleware/auth')
 const admin = require('./modules/admin')
 const userController = require('../controllers/user-controller')
 
@@ -10,7 +10,7 @@ router.post('/admin/signin', authLocal, authenticatedAdmin, userController.signI
 router.post('/signin', authLocal, authenticatedUser, userController.signIn)
 router.post('/signup', userController.signUp)
 
-router.use('/admin', admin)
+router.use('/admin', authJWT, authenticatedAdmin, admin)
 
 router.use('/', errorHandler)
 module.exports = router

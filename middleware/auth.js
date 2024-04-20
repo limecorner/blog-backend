@@ -23,8 +23,11 @@ const authenticatedUser = (req, res, next) => {
   }
 }
 
+const authJWT = passport.authenticate('jwt', { session: false })
+
 module.exports = {
   authLocal,
   authenticatedAdmin,
-  authenticatedUser
+  authenticatedUser,
+  authJWT
 }
