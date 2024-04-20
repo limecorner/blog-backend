@@ -1,13 +1,15 @@
 module.exports = {
   errorHandler (err, req, res, next) {
     if (err instanceof Error) {
-      res.status(err.status || 500).json({
-        status: 'error',
-        message: `${err.name} ${err.message}`
+      const { name, message, businessLogicErrorCode } = err
+      res.status(err.statusCode || 500).json({
+        success: false,
+        message: `${name} ${message}`,
+        business_logic_error_code: businessLogicErrorCode
       })
     } else {
       res.status(500).json({
-        status: 'error',
+        success: false,
         message: `${err}`
       })
     }

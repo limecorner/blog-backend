@@ -11,11 +11,26 @@ const userController = {
         !email.trim() ||
         !password.trim() ||
         !passwordCheck.trim()
-      ) { throw new Error('所有欄位必填') }
-      if (password !== passwordCheck) throw new Error('兩次輸入的密碼不同')
+      ) {
+        const error = new Error('所有欄位必填')
+        error.statusCode = 400
+        error.businessLogicErrorCode = 31
+        throw error
+      }
+      if (password !== passwordCheck) {
+        const error = new Error('兩次輸入的密碼不同')
+        error.statusCode = 400
+        error.businessLogicErrorCode = 32
+        throw error
+      }
 
       const user = await User.findOne({ where: { email } })
-      if (user) throw new Error('Email 已經存在')
+      if (user) {
+        const error = new Error('Email 已經存在')
+        error.statusCode = 400
+        error.businessLogicErrorCode = 21
+        throw error
+      }
 
       const hash = await bcrypt.hash(password, saltRounds)
       const newUser = await User.create({
@@ -24,7 +39,7 @@ const userController = {
         password: hash
       })
       res.json({
-        status: 'success',
+        success: true,
         data: {
           user: newUser
         }
@@ -39,7 +54,7 @@ const userController = {
       delete userData.password
       const token = jwt.sign(userData, process.env.JWT_SECRET, { expiresIn: '30d' })
       res.json({
-        status: 'success',
+        success: true,
         data: {
           token,
           user: userData

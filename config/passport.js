@@ -15,9 +15,12 @@ passport.use(new LocalStrategy(
   async (email, password, cb) => {
     try {
       const user = await User.findOne({ where: { email } })
-      if (!user) throw new Error('帳號或密碼錯誤')
+      const error = new Error('帳號或密碼錯誤')
+      error.statusCode = 401
+      if (!user) throw error
+
       const isPasswordCorrect = await bcrypt.compare(password, user.password)
-      if (!isPasswordCorrect) throw new Error('帳號或密碼錯誤')
+      if (!isPasswordCorrect) throw error
       cb(null, user.toJSON())
     } catch (err) {
       cb(err)
