@@ -1,4 +1,4 @@
-const { User } = require('../models')
+const { User, Category } = require('../models')
 
 const adminController = {
   patchUser: async (req, res, next) => {
@@ -27,6 +27,36 @@ const adminController = {
         success: true,
         data: {
           user: patchedUser
+        }
+      })
+    } catch (error) {
+      next(error)
+    }
+  },
+  postCategory: async (req, res, next) => {
+    try {
+      const { name } = req.body
+      if (!name) {
+        const error = new Error('文章類別為必填')
+        error.statusCode = 400
+        error.businessLogicErrorCode = 31
+        throw error
+      }
+
+      const categories = await Category.findAll({ raw: true }) || []
+      if (categories.length &&
+        categories.some(category => category.name === name)) {
+        const error = new Error('此文章類別已存在')
+        error.statusCode = 400
+        error.businessLogicErrorCode = 21
+        throw error
+      }
+
+      const newCategory = await Category.create({ name })
+      res.status(201).json({
+        success: true,
+        data: {
+          category: newCategory
         }
       })
     } catch (error) {
