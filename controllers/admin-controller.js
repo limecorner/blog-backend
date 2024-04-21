@@ -62,6 +62,19 @@ const adminController = {
     } catch (error) {
       next(error)
     }
+  },
+  getCategories: async (req, res, next) => {
+    try {
+      const categories = await Category.findAll({ raw: true }) || []
+      res.json({
+        success: true,
+        data: {
+          categories
+        }
+      })
+    } catch (error) {
+      next(error)
+    }
   }
 }
 
