@@ -1,4 +1,5 @@
 const { User, Category } = require('../models')
+const { caughtErr } = require('../helpers/err-helpers')
 
 const adminController = {
   patchUser: async (req, res, next) => {
@@ -70,6 +71,36 @@ const adminController = {
         success: true,
         data: {
           categories
+        }
+      })
+    } catch (error) {
+      next(error)
+    }
+  },
+  putCategory: async (req, res, next) => {
+    try {
+      const id = Number(req.params.id)
+      const { name } = req.body
+      if (!name.trim()) {
+        throw caughtErr('文章類別為必填', 400, 31)
+      }
+
+      const categories = await Category.findAll({ raw: true }) || []
+      if (categories.length &&
+        categories.some(category => category.name === name)) {
+        throw caughtErr('此文章類別已存在', 400, 21)
+      }
+
+      const category = await Category.findByPk(id)
+      if (!category) {
+        throw caughtErr('無法編輯不存在的文章類別', 404, 11)
+      }
+
+      const putCategory = await category.update({ name })
+      res.status(200).json({
+        success: true,
+        data: {
+          category: putCategory
         }
       })
     } catch (error) {
