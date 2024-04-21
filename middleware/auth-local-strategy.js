@@ -2,6 +2,7 @@ const passport = require('passport')
 const LocalStrategy = require('passport-local')
 const bcrypt = require('bcryptjs')
 const { User } = require('../models')
+const { caughtErr } = require('../helpers/err-helpers')
 
 const strategy = new LocalStrategy(
   {
@@ -11,12 +12,10 @@ const strategy = new LocalStrategy(
   async (email, password, cb) => {
     try {
       const user = await User.findOne({ where: { email } })
-      const error = new Error('帳號或密碼錯誤')
-      error.statusCode = 401
-      if (!user) throw error
+      if (!user) throw caughtErr('帳號或密碼錯誤', 401, null)
 
       const isPasswordCorrect = await bcrypt.compare(password, user.password)
-      if (!isPasswordCorrect) throw error
+      if (!isPasswordCorrect) throw caughtErr('帳號或密碼錯誤', 401, null)
       cb(null, user.toJSON())
     } catch (err) {
       cb(err)

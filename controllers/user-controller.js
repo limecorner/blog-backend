@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const { User } = require('../models')
 const { saltRounds } = require('../helpers/auth-helpers')
+const { caughtErr } = require('../helpers/err-helpers')
 
 const userController = {
   signUp: async (req, res, next) => {
@@ -12,24 +13,15 @@ const userController = {
         !password.trim() ||
         !passwordCheck.trim()
       ) {
-        const error = new Error('所有欄位必填')
-        error.statusCode = 400
-        error.businessLogicErrorCode = 31
-        throw error
+        throw caughtErr('所有欄位必填', 400, 31)
       }
       if (password !== passwordCheck) {
-        const error = new Error('兩次輸入的密碼不同')
-        error.statusCode = 400
-        error.businessLogicErrorCode = 32
-        throw error
+        throw caughtErr('兩次輸入的密碼不同', 400, 32)
       }
 
       const user = await User.findOne({ where: { email } })
       if (user) {
-        const error = new Error('Email 已經存在')
-        error.statusCode = 400
-        error.businessLogicErrorCode = 21
-        throw error
+        throw caughtErr('Email 已經存在', 400, 21)
       }
 
       const hash = await bcrypt.hash(password, saltRounds)

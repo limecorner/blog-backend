@@ -1,14 +1,12 @@
 const { Article } = require('../models')
+const { caughtErr } = require('../helpers/err-helpers')
 
 const articleController = {
   postArticle: async (req, res, next) => {
     try {
       const { userId, categoryId, title, content, clapCount } = req.body
       if (!categoryId || !title.trim() || !content.trim()) {
-        const error = new Error('文章類別、標題、內容皆為必填欄位')
-        error.status = 400
-        error.businessLogicErrorCode = 31
-        throw error
+        throw caughtErr('文章類別、標題、內容皆為必填欄位', 400, 31)
       }
 
       const newArticle = await Article.create(

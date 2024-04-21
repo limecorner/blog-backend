@@ -7,19 +7,13 @@ const adminController = {
       const { id } = req.params
       const user = await User.findByPk(id)
       if (!user) {
-        const error = new Error('該使用者不存在')
-        error.statusCode = 404
-        error.businessLogicErrorCode = 11
-        throw error
+        throw caughtErr('該使用者不存在', 404, 11)
       }
 
       const permissions = Object.values(User.rawAttributes.permission.values)
       const { permission } = req.body
       if (!permissions.includes(permission)) {
-        const error = new Error('該使用者權限不存在')
-        error.statusCode = 404
-        error.businessLogicErrorCode = 11
-        throw error
+        throw caughtErr('該使用者權限不存在', 404, 11)
       }
 
       const patchedUser = await user.update({ permission })
@@ -38,19 +32,13 @@ const adminController = {
     try {
       const { name } = req.body
       if (!name) {
-        const error = new Error('文章類別為必填')
-        error.statusCode = 400
-        error.businessLogicErrorCode = 31
-        throw error
+        throw caughtErr('文章類別為必填', 400, 31)
       }
 
       const categories = await Category.findAll({ raw: true }) || []
       if (categories.length &&
         categories.some(category => category.name === name)) {
-        const error = new Error('此文章類別已存在')
-        error.statusCode = 400
-        error.businessLogicErrorCode = 21
-        throw error
+        throw caughtErr('此文章類別已存在', 400, 21)
       }
 
       const newCategory = await Category.create({ name })
