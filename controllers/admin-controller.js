@@ -94,6 +94,25 @@ const adminController = {
     } catch (error) {
       next(error)
     }
+  },
+  deleteCategory: async (req, res, next) => {
+    try {
+      const id = Number(req.params.id)
+      const category = await Category.findByPk(id)
+      if (!category) {
+        throw caughtErr('無法刪除不存在的文章類別', 404, 11)
+      }
+
+      const deletedCategory = await category.destroy()
+      res.status(200).json({
+        success: true,
+        data: {
+          category: deletedCategory
+        }
+      })
+    } catch (error) {
+      next(error)
+    }
   }
 }
 
