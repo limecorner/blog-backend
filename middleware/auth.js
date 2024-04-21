@@ -1,7 +1,4 @@
-const passport = require('../config/passport')
 const authHelpers = require('../helpers/auth-helpers')
-
-const authLocal = passport.authenticate('local', { session: false })
 
 const authenticatedAdmin = (req, res, next) => {
   if (authHelpers.getUser(req)?.role === 'admin') {
@@ -23,11 +20,7 @@ const authenticatedUser = (req, res, next) => {
   }
 }
 
-const authJWT = passport.authenticate('jwt', { session: false })
-
 module.exports = {
-  authLocal,
   authenticatedAdmin,
-  authenticatedUser,
-  authJWT
+  authenticatedUser
 }
