@@ -45,13 +45,14 @@ const articleController = {
   },
   postArticle: async (req, res, next) => {
     try {
-      const { userId, categoryId, title, content, clapCount } = req.body
+      const { id: userId } = authHelpers.getUser(req)
+      const { categoryId, title, content } = req.body
       if (!categoryId || !title.trim() || !content.trim()) {
         throw caughtErr('文章類別、標題、內容皆為必填欄位', 400, 31)
       }
 
       const newArticle = await Article.create(
-        { userId, categoryId, title, content, clapCount }
+        { userId, categoryId, title, content }
       )
       return res.json({
         success: true,
