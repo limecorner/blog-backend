@@ -7,6 +7,11 @@ module.exports = (sequelize, DataTypes) => {
     static associate (models) {
       Article.belongsTo(models.User, { foreignKey: 'userId' })
       Article.belongsTo(models.Category, { foreignKey: 'categoryId' })
+      Article.belongsToMany(models.User, {
+        through: models.Response,
+        foreignKey: 'articleId',
+        as: 'RespondedArticles'
+      })
     }
   };
   Article.init({
