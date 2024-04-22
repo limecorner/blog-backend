@@ -88,6 +88,25 @@ const articleController = {
     } catch (err) {
       next(err)
     }
+  },
+  deleteArticle: async (req, res, next) => {
+    try {
+      const id = Number(req.params.id)
+      const article = await Article.findByPk(id)
+      if (!article) {
+        throw caughtErr('無法刪除不存在的文章', 404, 11)
+      }
+
+      const deletedArticle = await article.destroy()
+      return res.json({
+        success: true,
+        data: {
+          article: deletedArticle
+        }
+      })
+    } catch (err) {
+      next(err)
+    }
   }
 }
 module.exports = articleController
