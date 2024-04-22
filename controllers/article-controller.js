@@ -7,7 +7,6 @@ const { userPermissionsEnum, articlePermissionsEnum } = require('../constants')
 const articleController = {
   getArticles: async (req, res, next) => {
     try {
-      console.log('authHelpers.getUser(req)', authHelpers.getUser(req))
       const loggedPermission = authHelpers.getUser(req).permission
       let permissions = []
       if (loggedPermission === userPermissionsEnum.login) {
@@ -30,7 +29,6 @@ const articleController = {
         },
         order: [['createdAt', 'DESC'], ['id', 'DESC']]
       })
-      console.log({ articles })
       if (!articles.length) {
         throw caughtErr(`在你的使用者權限 ${loggedPermission} 底下，目前沒有可以看的文章`, 404, 11)
       }
@@ -59,6 +57,32 @@ const articleController = {
         success: true,
         data: {
           article: newArticle
+        }
+      })
+    } catch (err) {
+      next(err)
+    }
+  },
+  putArticle: async (req, res, next) => {
+    try {
+      const id = Number(req.params.id)
+      const { categoryId, title, content } = req.body
+      if (!categoryId || !title.trim() || !content.trim()) {
+        throw caughtErr('文章類別、標題、內容皆為必填欄位', 400, 31)
+      }
+
+      const article = await Article.findByPk(id)
+      if (!article) {
+        throw caughtErr('無法編輯不存在的文章', 404, 11)
+      }
+
+      const putArticle = await article.update(
+        { categoryId, title, content }
+      )
+      return res.json({
+        success: true,
+        data: {
+          article: putArticle
         }
       })
     } catch (err) {
