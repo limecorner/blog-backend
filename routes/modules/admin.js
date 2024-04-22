@@ -12,6 +12,7 @@ router.post('/categories', adminController.postCategory)
 router.put('/categories/:id', adminController.putCategory)
 router.delete('/categories/:id', adminController.deleteCategory)
 
+router.patch('/articles/:id', articleController.patchArticle)
 router.delete('/articles/:id', articleController.deleteArticle)
 
 module.exports = router

@@ -90,6 +90,32 @@ const articleController = {
       next(err)
     }
   },
+  patchArticle: async (req, res, next) => {
+    try {
+      const id = Number(req.params.id)
+      const { categoryId } = req.body
+      if (!categoryId) {
+        throw caughtErr('文章類別必填欄位', 400, 31)
+      }
+
+      const article = await Article.findByPk(id)
+      if (!article) {
+        throw caughtErr('無法編輯不存在的文章權限', 404, 11)
+      }
+
+      const patchArticle = await article.update(
+        { categoryId }
+      )
+      return res.json({
+        success: true,
+        data: {
+          article: patchArticle
+        }
+      })
+    } catch (err) {
+      next(err)
+    }
+  },
   deleteArticle: async (req, res, next) => {
     try {
       const id = Number(req.params.id)
