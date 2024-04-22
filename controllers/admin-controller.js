@@ -52,6 +52,25 @@ const adminController = {
       next(error)
     }
   },
+  getCategory: async (req, res, next) => {
+    try {
+      const id = req.params.id
+      const category = await Category.findByPk(id, {
+        raw: true
+      })
+      if (!category) {
+        throw caughtErr('無法取得不存在的文章類別', 404, 11)
+      }
+      res.json({
+        success: true,
+        data: {
+          category
+        }
+      })
+    } catch (error) {
+      next(error)
+    }
+  },
   getCategories: async (req, res, next) => {
     try {
       const categories = await Category.findAll({ raw: true }) || []
