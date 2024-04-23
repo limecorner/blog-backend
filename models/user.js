@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(models.Response, { foreignKey: 'userId' })
       User.belongsToMany(User, {
         through: models.Followship,
-        foreignKey: 'idolId ',
+        foreignKey: 'idolId',
         as: 'Fans'
       })
       User.belongsToMany(User, {
