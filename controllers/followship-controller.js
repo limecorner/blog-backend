@@ -30,6 +30,28 @@ const followshipController = {
     } catch (err) {
       next(err)
     }
+  },
+  deleteIdol: async (req, res, next) => {
+    try {
+      const idolId = Number(req.params.idolId)
+      const { id: fanId } = authHelpers.getUser(req)
+      const followship = await Followship.findOne({
+        where: { idolId, fanId }
+      })
+      if (!followship) {
+        throw caughtErr('因你尚未追蹤此偶像，故無法取消追蹤', 404, 11)
+      }
+
+      const deletedfollowship = await followship.destroy()
+      return res.json({
+        success: true,
+        data: {
+          followship: deletedfollowship
+        }
+      })
+    } catch (err) {
+      next(err)
+    }
   }
 
 }
