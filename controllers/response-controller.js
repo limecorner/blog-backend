@@ -55,6 +55,25 @@ const responseController = {
     } catch (err) {
       next(err)
     }
+  },
+  deleteResponse: async (req, res, next) => {
+    try {
+      const id = Number(req.params.id)
+      const response = await Response.findByPk(id)
+      if (!response) {
+        throw caughtErr('無法刪除不存在的文章', 404, 11)
+      }
+
+      const deletedResponse = await response.destroy()
+      return res.json({
+        success: true,
+        data: {
+          response: deletedResponse
+        }
+      })
+    } catch (err) {
+      next(err)
+    }
   }
 
 }
