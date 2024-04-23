@@ -5,7 +5,7 @@ const { caughtErr } = require('../helpers/err-helpers')
 const followshipController = {
   postIdol: async (req, res, next) => {
     try {
-      const idolId = Number(req.params.id)
+      const idolId = Number(req.params.idolId)
       const { id: fanId } = authHelpers.getUser(req)
       if (idolId === fanId) {
         throw caughtErr('無法追蹤自己', 400, 41)
