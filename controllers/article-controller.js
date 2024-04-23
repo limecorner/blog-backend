@@ -1,5 +1,5 @@
 const { Op } = require('sequelize')
-const { Article, Category } = require('../models')
+const { Article, Category, Response } = require('../models')
 const authHelpers = require('../helpers/auth-helpers')
 const { caughtErr } = require('../helpers/err-helpers')
 const { userPermissionsEnum, articlePermissionsEnum } = require('../constants')
@@ -37,6 +37,24 @@ const articleController = {
         success: true,
         data: {
           articles
+        }
+      })
+    } catch (err) {
+      next(err)
+    }
+  },
+  getArticle: async (req, res, next) => {
+    try {
+      const id = Number(req.params.id)
+      const article = await Article.findByPk(id, {
+        include: [{ model: Response }],
+        order: [[{ model: Response }, 'createdAt', 'DESC']]
+      })
+
+      return res.json({
+        success: true,
+        data: {
+          article
         }
       })
     } catch (err) {
