@@ -6,11 +6,7 @@ module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate (models) {
       User.hasMany(models.Article, { foreignKey: 'userId' })
-      User.belongsToMany(models.Article, {
-        through: models.Response,
-        foreignKey: 'userId',
-        as: 'RespondedUsers'
-      })
+      User.hasMany(models.Response, { foreignKey: 'userId' })
     }
   };
   User.init({

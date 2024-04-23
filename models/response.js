@@ -5,6 +5,8 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class Response extends Model {
     static associate (models) {
+      Response.belongsTo(models.Article, { foreignKey: 'articleId' })
+      Response.belongsTo(models.User, { foreignKey: 'userId' })
     }
   };
   Response.init({
