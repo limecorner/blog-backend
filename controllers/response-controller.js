@@ -22,9 +22,7 @@ const responseController = {
       )
       return res.json({
         success: true,
-        data: {
-          response: newResponse
-        }
+        response: newResponse
       })
     } catch (err) {
       next(err)
@@ -48,9 +46,7 @@ const responseController = {
       )
       return res.json({
         success: true,
-        data: {
-          response: putResponse
-        }
+        response: putResponse
       })
     } catch (err) {
       next(err)
@@ -67,9 +63,7 @@ const responseController = {
       const deletedResponse = await response.destroy()
       return res.json({
         success: true,
-        data: {
-          response: deletedResponse
-        }
+        response: deletedResponse
       })
     } catch (err) {
       next(err)

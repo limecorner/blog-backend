@@ -23,9 +23,7 @@ const followshipController = {
       )
       return res.json({
         success: true,
-        data: {
-          followship: newfollowship
-        }
+        followship: newfollowship
       })
     } catch (err) {
       next(err)
@@ -45,9 +43,7 @@ const followshipController = {
       const deletedfollowship = await followship.destroy()
       return res.json({
         success: true,
-        data: {
-          followship: deletedfollowship
-        }
+        followship: deletedfollowship
       })
     } catch (err) {
       next(err)

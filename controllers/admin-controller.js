@@ -20,9 +20,7 @@ const adminController = {
 
       res.json({
         success: true,
-        data: {
-          user: patchedUser
-        }
+        user: patchedUser
       })
     } catch (error) {
       next(error)
@@ -44,9 +42,7 @@ const adminController = {
       const newCategory = await Category.create({ name })
       res.status(201).json({
         success: true,
-        data: {
-          category: newCategory
-        }
+        category: newCategory
       })
     } catch (error) {
       next(error)
@@ -63,9 +59,7 @@ const adminController = {
       }
       res.json({
         success: true,
-        data: {
-          category
-        }
+        category
       })
     } catch (error) {
       next(error)
@@ -76,9 +70,7 @@ const adminController = {
       const categories = await Category.findAll({ raw: true }) || []
       res.json({
         success: true,
-        data: {
-          categories
-        }
+        categories
       })
     } catch (error) {
       next(error)
@@ -106,9 +98,7 @@ const adminController = {
       const putCategory = await category.update({ name })
       res.status(200).json({
         success: true,
-        data: {
-          category: putCategory
-        }
+        category: putCategory
       })
     } catch (error) {
       next(error)
@@ -125,9 +115,7 @@ const adminController = {
       const deletedCategory = await category.destroy()
       res.status(200).json({
         success: true,
-        data: {
-          category: deletedCategory
-        }
+        category: deletedCategory
       })
     } catch (error) {
       next(error)

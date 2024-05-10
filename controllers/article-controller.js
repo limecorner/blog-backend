@@ -35,9 +35,7 @@ const articleController = {
 
       return res.json({
         success: true,
-        data: {
-          articles
-        }
+        articles
       })
     } catch (err) {
       next(err)
@@ -53,9 +51,7 @@ const articleController = {
 
       return res.json({
         success: true,
-        data: {
-          article
-        }
+        article
       })
     } catch (err) {
       next(err)
@@ -74,9 +70,7 @@ const articleController = {
       )
       return res.json({
         success: true,
-        data: {
-          article: newArticle
-        }
+        article: newArticle
       })
     } catch (err) {
       next(err)
@@ -100,9 +94,7 @@ const articleController = {
       )
       return res.json({
         success: true,
-        data: {
-          article: putArticle
-        }
+        article: putArticle
       })
     } catch (err) {
       next(err)
@@ -126,9 +118,7 @@ const articleController = {
       )
       return res.json({
         success: true,
-        data: {
-          article: patchArticle
-        }
+        article: patchArticle
       })
     } catch (err) {
       next(err)
@@ -145,9 +135,7 @@ const articleController = {
       const deletedArticle = await article.destroy()
       return res.json({
         success: true,
-        data: {
-          article: deletedArticle
-        }
+        article: deletedArticle
       })
     } catch (err) {
       next(err)

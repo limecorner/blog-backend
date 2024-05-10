@@ -25,16 +25,14 @@ const userController = {
       }
 
       const hash = await bcrypt.hash(password, saltRounds)
-      const newUser = await User.create({
+      await User.create({
         name,
         email,
         password: hash
       })
       res.json({
         success: true,
-        data: {
-          user: newUser
-        }
+        message: '註冊成功'
       })
     } catch (err) {
       next(err)
@@ -42,15 +40,13 @@ const userController = {
   },
   signIn: (req, res, next) => {
     try {
-      const userData = req.user
-      delete userData.password
-      const token = jwt.sign(userData, process.env.JWT_SECRET, { expiresIn: '30d' })
+      const user = req.user
+      delete user.password
+      const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: '30d' })
       res.json({
         success: true,
-        data: {
-          token,
-          user: userData
-        }
+        token,
+        user
       })
     } catch (err) {
       next(err)
