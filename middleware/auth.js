@@ -10,7 +10,8 @@ const authenticatedAdmin = (req, res, next) => {
 }
 
 const authenticatedUser = (req, res, next) => {
-  if (authHelpers.getUser(req)?.role === 'user') {
+  const role = authHelpers.getUser(req)?.role
+  if (role === 'user' || role === 'member') {
     return next()
   } else {
     throw caughtErr('無法使用前台', 403, null)
