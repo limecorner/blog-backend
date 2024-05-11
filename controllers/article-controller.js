@@ -27,7 +27,9 @@ const articleController = {
             [Op.or]: permissions
           }
         },
-        order: [['createdAt', 'DESC'], ['id', 'DESC']]
+        order: [['createdAt', 'DESC'], ['id', 'DESC']],
+        nest: true,
+        raw: true
       })
       if (!articles.length) {
         throw caughtErr(`在你的使用者權限 ${loggedPermission} 底下，目前沒有可以看的文章`, 404, 11)
@@ -46,7 +48,9 @@ const articleController = {
       const id = Number(req.params.id)
       const article = await Article.findByPk(id, {
         include: [{ model: Response }],
-        order: [[{ model: Response }, 'createdAt', 'DESC']]
+        order: [[{ model: Response }, 'createdAt', 'DESC']],
+        nest: true,
+        raw: true
       })
 
       return res.json({
@@ -60,13 +64,13 @@ const articleController = {
   postArticle: async (req, res, next) => {
     try {
       const { id: userId } = authHelpers.getUser(req)
-      const { categoryId, title, content } = req.body
+      const { categoryId, title, permission, content } = req.body
       if (!categoryId || !title.trim() || !content.trim()) {
         throw caughtErr('文章類別、標題、內容皆為必填欄位', 400, 31)
       }
 
       const newArticle = await Article.create(
-        { userId, categoryId, title, content }
+        { userId, categoryId, title, permission, content }
       )
       return res.json({
         success: true,
@@ -79,7 +83,7 @@ const articleController = {
   putArticle: async (req, res, next) => {
     try {
       const id = Number(req.params.id)
-      const { categoryId, title, content } = req.body
+      const { categoryId, title, permission, content } = req.body
       if (!categoryId || !title.trim() || !content.trim()) {
         throw caughtErr('文章類別、標題、內容皆為必填欄位', 400, 31)
       }
@@ -90,7 +94,7 @@ const articleController = {
       }
 
       const putArticle = await article.update(
-        { categoryId, title, content }
+        { categoryId, title, permission, content }
       )
       return res.json({
         success: true,
