@@ -48,14 +48,12 @@ const articleController = {
       const id = Number(req.params.id)
       const article = await Article.findByPk(id, {
         include: [{ model: Response }],
-        order: [[{ model: Response }, 'createdAt', 'DESC']],
-        nest: true,
-        raw: true
+        order: [[{ model: Response }, 'createdAt', 'DESC']]
       })
 
       return res.json({
         success: true,
-        article
+        article: article.toJSON()
       })
     } catch (err) {
       next(err)
