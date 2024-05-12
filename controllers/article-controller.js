@@ -1,5 +1,5 @@
 const { Op } = require('sequelize')
-const { Article, Category, Response } = require('../models')
+const { Article, Category, Response, User } = require('../models')
 const authHelpers = require('../helpers/auth-helpers')
 const { caughtErr } = require('../helpers/err-helpers')
 const { userPermissionsEnum, articlePermissionsEnum } = require('../constants')
@@ -21,7 +21,9 @@ const articleController = {
       }
 
       const articles = await Article.findAll({
-        include: [{ model: Category }],
+        include: [
+          { model: Category },
+          { model: User, attributes: ['name'] }],
         where: {
           permission: {
             [Op.or]: permissions
@@ -47,7 +49,13 @@ const articleController = {
     try {
       const id = Number(req.params.id)
       const article = await Article.findByPk(id, {
-        include: [{ model: Response }],
+        include: [
+          {
+            model: Response,
+            include: [{ model: User, attributes: ['name'] }]
+          }, {
+            model: User, attributes: ['name']
+          }],
         order: [[{ model: Response }, 'createdAt', 'DESC']]
       })
 
