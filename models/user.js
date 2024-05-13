@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
     bio: DataTypes.STRING,
     photo: DataTypes.STRING,
     permission: DataTypes.ENUM('login', 'member'),
-    role: DataTypes.STRING
+    role: DataTypes.STRING // 就是 permission，最後使用 permission
   }, {
     sequelize,
     modelName: 'User',

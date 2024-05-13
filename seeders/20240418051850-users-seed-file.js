@@ -17,7 +17,7 @@ module.exports = {
       bio: 'boss',
       photo: 'https://loremflickr.com/320/240/avatar',
       permission: getRandomPermission(),
-      role: 'admin',
+      // role: 'admin',
       created_at: new Date(),
       updated_at: new Date()
     }, {
@@ -27,7 +27,7 @@ module.exports = {
       bio: 'user1',
       photo: 'https://loremflickr.com/320/240/avatar',
       permission: getRandomPermission(),
-      role: 'user',
+      // role: 'login',
       created_at: new Date(),
       updated_at: new Date()
     }, {
@@ -37,7 +37,7 @@ module.exports = {
       bio: 'user2',
       photo: 'https://loremflickr.com/320/240/avatar',
       permission: getRandomPermission(),
-      role: 'user',
+      // role: 'login',
       created_at: new Date(),
       updated_at: new Date()
     }], {})
