@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const { User } = require('../models')
-const { saltRounds } = require('../helpers/auth-helpers')
+const authHelpers = require('../helpers/auth-helpers')
 const { caughtErr } = require('../helpers/err-helpers')
 
 const userController = {
@@ -24,7 +24,7 @@ const userController = {
         throw caughtErr('Email 已經存在', 400, 21)
       }
 
-      const hash = await bcrypt.hash(password, saltRounds)
+      const hash = await bcrypt.hash(password, authHelpers.saltRounds)
       await User.create({
         name,
         email,
@@ -46,6 +46,25 @@ const userController = {
       res.json({
         success: true,
         token,
+        user
+      })
+    } catch (err) {
+      next(err)
+    }
+  },
+  getCurrentUser: async (req, res, next) => {
+    try {
+      const id = authHelpers.getUser(req).id
+      const user = await User.findByPk(id, {
+        attributes: [
+          'id', 'name', 'email', 'bio', 'photo'
+        ]
+
+      })
+      if (!user) throw new Error('查無此使用者')
+      res.json({
+        success: true,
+        message: '登入使用者的資料',
         user
       })
     } catch (err) {
