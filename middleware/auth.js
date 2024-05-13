@@ -2,7 +2,7 @@ const authHelpers = require('../helpers/auth-helpers')
 const { caughtErr } = require('../helpers/err-helpers')
 
 const authenticatedAdmin = (req, res, next) => {
-  if (authHelpers.getUser(req)?.role === 'admin') {
+  if (authHelpers.getUser(req)?.permission === 'admin') {
     return next()
   } else {
     throw caughtErr('無法使用後台', 403, null)
@@ -10,8 +10,8 @@ const authenticatedAdmin = (req, res, next) => {
 }
 
 const authenticatedUser = (req, res, next) => {
-  const role = authHelpers.getUser(req)?.role
-  if (role === 'user' || role === 'member') {
+  const permission = authHelpers.getUser(req)?.permission
+  if (permission === 'login' || permission === 'member') {
     return next()
   } else {
     throw caughtErr('無法使用前台', 403, null)
