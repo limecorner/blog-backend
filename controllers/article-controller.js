@@ -51,6 +51,9 @@ const articleController = {
       const article = await Article.findByPk(id, {
         include: [
           {
+            model: Category, attributes: ['name']
+          },
+          {
             model: Response,
             include: [{ model: User, attributes: ['name'] }]
           }, {
