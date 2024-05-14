@@ -57,7 +57,7 @@ const articleController = {
             model: Response,
             include: [{ model: User, attributes: ['name'] }]
           }, {
-            model: User, attributes: ['name']
+            model: User, attributes: ['id', 'name']
           }],
         order: [[{ model: Response }, 'createdAt', 'DESC']]
       })
