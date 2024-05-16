@@ -55,7 +55,7 @@ const articleController = {
           },
           {
             model: Response,
-            include: [{ model: User, attributes: ['name'] }]
+            include: [{ model: User, attributes: ['id', 'name'] }]
           }, {
             model: User, attributes: ['id', 'name']
           }],
