@@ -23,7 +23,7 @@ const articleController = {
       const articles = await Article.findAll({
         include: [
           { model: Category },
-          { model: User, attributes: ['name'] }],
+          { model: User, attributes: ['id', 'name'] }],
         where: {
           permission: {
             [Op.or]: permissions
