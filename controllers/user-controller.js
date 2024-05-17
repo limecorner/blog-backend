@@ -58,8 +58,11 @@ const userController = {
       const user = await User.findByPk(id, {
         attributes: [
           'id', 'name', 'email', 'bio', 'photo'
+        ],
+        include: [
+          { model: User, as: 'Idols' },
+          { model: User, as: 'Fans' }
         ]
-
       })
       if (!user) throw new Error('查無此使用者')
       res.json({
