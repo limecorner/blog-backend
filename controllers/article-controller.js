@@ -27,7 +27,9 @@ const articleController = {
         where: {
           permission: {
             [Op.or]: permissions
-          }
+          },
+          ...req.query
+          // userId: req.query.userId
         },
         order: [['createdAt', 'DESC'], ['id', 'DESC']],
         nest: true,
