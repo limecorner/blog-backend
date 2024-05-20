@@ -57,7 +57,7 @@ const userController = {
       const id = authHelpers.getUser(req).id
       const user = await User.findByPk(id, {
         attributes: [
-          'id', 'name', 'email', 'bio', 'photo'
+          'id', 'name', 'email', 'bio', 'photo', 'permission'
         ],
         include: [
           { model: User, as: 'Idols' },
