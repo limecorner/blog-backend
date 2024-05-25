@@ -17,13 +17,13 @@ app.use(express.json())
 app.use(passport.initialize())
 app.use(methodOverride('_method'))
 
-// app.use('/api', routes)
-app.use('https://my-blog-backend.fly.dev', routes)
+app.use('/api', routes)
 
 // app.listen(PORT, () => {
 //   console.log(`App is running on http://localhost:${PORT}`)
 // })
+
+// 部署
 app.listen(PORT, '0.0.0.0', () => {
-  // console.log(`App is running on http://localhost:${PORT}`)
   console.log('App is running on https://my-blog-backend.fly.dev')
 })
