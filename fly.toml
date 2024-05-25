@@ -8,6 +8,11 @@ primary_region = 'sin'
 
 [build]
 
+[services]
+  [services.internal]
+    protocol = "tcp"
+    ports = [ "8080" ]  # Add or modify ports as needed
+
 [env]
   NODE_ENV = 'production'
   PORT = '8080'
