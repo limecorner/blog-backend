@@ -1,4 +1,4 @@
-# fly.toml app configuration file generated for my-blog-mysql on 2024-05-22T17:22:12+08:00
+# fly.toml app configuration file generated for my-blog-mysql on 2024-05-23T17:15:36+08:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
@@ -6,21 +6,27 @@
 app = 'my-blog-mysql'
 primary_region = 'sin'
 
-[build]
-  image = 'mysql:8'
-
-[[vm]]
-  size = 'shared-cpu-1x'
-  memory_mb = 256
-
 [processes]
-  app = """--datadir /data/mysql \
-    --default-authentication-plugin mysql_native_password"""
+app = """
+  --datadir /data/mysql 
+  --default-authentication-plugin mysql_native_password 
+  --performance-schema=OFF 
+  --innodb-buffer-pool-size 64M
+"""
 
 [mounts]
-  source = "mysqldata"
-  destination = "/data"
+  source="mysqldata"
+  destination="/data"
 
 [env]
   MYSQL_DATABASE = "some_db"
   MYSQL_USER = "non_root_user"
+
+[build]
+  image = "mysql:8.0.32"
+
+[[vm]]
+  size = 'shared-cpu-1x'
+
+[deploy]
+  release_command = "npx sequelize db:migrate"

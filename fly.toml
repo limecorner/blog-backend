@@ -1,0 +1,16 @@
+# fly.toml app configuration file generated for my-blog-backend on 2024-05-24T15:05:20+08:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'my-blog-backend'
+primary_region = 'sin'
+
+[build]
+
+[env]
+  NODE_ENV = 'production'
+  PORT = '8080'
+
+[[vm]]
+  size = 'shared-cpu-1x'
