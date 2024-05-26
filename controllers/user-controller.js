@@ -28,7 +28,8 @@ const userController = {
       await User.create({
         name,
         email,
-        password: hash
+        password: hash,
+        permission: 'login'
       })
       res.json({
         success: true,
