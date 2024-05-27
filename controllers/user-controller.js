@@ -74,6 +74,28 @@ const userController = {
     } catch (err) {
       next(err)
     }
+  },
+  getUser: async (req, res, next) => {
+    try {
+      const id = Number(req.params.id)
+      const user = await User.findByPk(id, {
+        attributes: [
+          'id', 'name', 'email', 'bio', 'photo', 'permission'
+        ],
+        include: [
+          { model: User, as: 'Idols' },
+          { model: User, as: 'Fans' }
+        ]
+      })
+      if (!user) throw new Error('查無此使用者')
+      res.json({
+        success: true,
+        message: '被點選使用者的資料',
+        user
+      })
+    } catch (err) {
+      next(err)
+    }
   }
 }
 module.exports = userController
