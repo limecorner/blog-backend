@@ -3,14 +3,10 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     const categories = [
-      { name: 'ExpressJS' },
-      { name: 'MySQL' },
-      { name: 'Sequelize' },
-      { name: 'MongoDB' },
-      { name: 'Mongoose' },
-      { name: 'PassportJs' },
-      { name: 'VueJS' },
-      { name: 'JavaScript' }
+      { name: '心情隨筆' },
+      { name: '心得' },
+      { name: '歌曲' },
+      { name: '週報' }
     ]
     await queryInterface.bulkInsert('Categories',
       categories
