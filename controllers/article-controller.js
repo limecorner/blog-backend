@@ -19,6 +19,15 @@ const articleController = {
           articlePermissionsEnum.login,
           articlePermissionsEnum.member]
       }
+      const { limit, offset } = req.query
+      // 引入 limit, offset 調整 where 限制
+      const whereQuery = {}
+      Object.keys(req.query).forEach(key => {
+        if (key !== 'limit' && key !== 'offset') {
+          whereQuery[key] = req.query[key]
+        }
+      })
+      console.log('whereQuery', whereQuery)
 
       const articles = await Article.findAll({
         include: [
@@ -28,12 +37,14 @@ const articleController = {
           permission: {
             [Op.or]: permissions
           },
-          ...req.query
+          ...whereQuery
           // userId: req.query.userId
         },
         order: [['createdAt', 'DESC'], ['id', 'DESC']],
         nest: true,
-        raw: true
+        raw: true,
+        limit: limit ? Number(limit) : null,
+        offset: offset ? Number(offset) : null
       })
       if (!articles.length) {
         throw caughtErr(`在你的使用者權限 ${loggedPermission} 底下，目前沒有可以看的文章`, 404, 11)
