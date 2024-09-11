@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs')
 const { User } = require('../models')
 const authHelpers = require('../helpers/auth-helpers')
 const { caughtErr } = require('../helpers/err-helpers')
-const { localFileHandler } = require('../helpers/file-helpers')
+const { imgurFileHandler } = require('../helpers/file-helpers')
 
 const userController = {
   signUp: async (req, res, next) => {
@@ -104,17 +104,16 @@ const userController = {
       const logedUser = authHelpers.getUser(req)
       if (queryId !== logedUser.id) throw new Error('不可編輯他人資料。', 401, 11)
 
-      const { name, email, bio } = req.body
+      const { name, bio } = req.body
       const { file } = req
-      if (!name.trim() || !email.trim()) {
+      if (!name.trim()) {
         throw caughtErr('名字、email 必填', 400, 31)
       }
 
       const user = await User.findByPk(logedUser.id)
-      const filePath = await localFileHandler(file)
+      const filePath = await imgurFileHandler(file)
       const putUser = await user.update({
         name,
-        email,
         bio,
         photo: filePath || logedUser.photo
       })
