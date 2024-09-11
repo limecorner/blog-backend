@@ -11,11 +11,9 @@ const articleController = {
       let permissions = []
       if (loggedPermission === userPermissionsEnum.login) {
         permissions = [
-          articlePermissionsEnum.guest,
           articlePermissionsEnum.login]
       } else if (loggedPermission === userPermissionsEnum.member) {
         permissions = [
-          articlePermissionsEnum.guest,
           articlePermissionsEnum.login,
           articlePermissionsEnum.member]
       }

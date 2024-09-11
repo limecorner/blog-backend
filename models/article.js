@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     categoryId: DataTypes.INTEGER,
     title: DataTypes.STRING,
     content: DataTypes.STRING,
-    permission: DataTypes.ENUM('guest', 'login', 'member'),
+    permission: DataTypes.ENUM('login', 'member'),
     clapCount: DataTypes.INTEGER
   }, {
     sequelize,

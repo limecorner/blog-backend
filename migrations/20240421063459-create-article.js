@@ -26,7 +26,7 @@ module.exports = {
       },
       permission: {
         allowNull: false,
-        type: Sequelize.ENUM('guest', 'login', 'member')
+        type: Sequelize.ENUM('login', 'member')
       },
       clap_count: {
         allowNull: false,
