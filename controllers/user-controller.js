@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs')
 const { User } = require('../models')
 const authHelpers = require('../helpers/auth-helpers')
 const { caughtErr } = require('../helpers/err-helpers')
+const { localFileHandler } = require('../helpers/file-helpers')
 
 const userController = {
   signUp: async (req, res, next) => {
@@ -92,6 +93,35 @@ const userController = {
         success: true,
         message: '被點選使用者的資料',
         user
+      })
+    } catch (err) {
+      next(err)
+    }
+  },
+  putUser: async (req, res, next) => {
+    try {
+      const queryId = Number(req.params.id)
+      const logedUser = authHelpers.getUser(req)
+      if (queryId !== logedUser.id) throw new Error('不可編輯他人資料。', 401, 11)
+
+      const { name, email, bio } = req.body
+      const { file } = req
+      if (!name.trim() || !email.trim()) {
+        throw caughtErr('名字、email 必填', 400, 31)
+      }
+
+      const user = await User.findByPk(logedUser.id)
+      const filePath = await localFileHandler(file)
+      const putUser = await user.update({
+        name,
+        email,
+        bio,
+        photo: filePath || logedUser.photo
+      })
+      res.json({
+        success: true,
+        message: '編輯個人資料成功',
+        user: putUser
       })
     } catch (err) {
       next(err)

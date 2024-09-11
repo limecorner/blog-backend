@@ -18,6 +18,7 @@
     "express": "^4.19.2",
     "jsonwebtoken": "^8.5.1",
     "method-override": "^3.0.0",
+    "multer": "^1.4.4",
     "mysql2": "^2.3.0",
     "nodemon": "^3.1.0",
     "passport": "^0.4.1",
