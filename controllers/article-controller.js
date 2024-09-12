@@ -21,7 +21,7 @@ const articleController = {
       const articles = await Article.findAll({
         include: [
           { model: Category },
-          { model: User, attributes: ['id', 'name'] }],
+          { model: User, attributes: ['id', 'name', 'photo'] }],
         where: {
           permission: {
             [Op.or]: permissions
@@ -57,7 +57,7 @@ const articleController = {
             model: Response,
             include: [{ model: User, attributes: ['id', 'name'] }]
           }, {
-            model: User, attributes: ['id', 'name']
+            model: User, attributes: ['id', 'name', 'photo']
           }],
         order: [[{ model: Response }, 'createdAt', 'DESC']]
       })
