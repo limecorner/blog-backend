@@ -1,5 +1,13 @@
 const authHelpers = require('../helpers/auth-helpers')
 const { caughtErr } = require('../helpers/err-helpers')
+const passportUseJWT = require('./auth-jwt-strategy')
+const authJWT = (req, res, next) => {
+  passportUseJWT.authenticate('jwt', { session: false }, (err, user) => {
+    if (err || !user) throw caughtErr('請先登入才能使用', 401, null)
+    req.user = user
+    return next()
+  })(req, res, next)
+}
 
 const authenticatedAdmin = (req, res, next) => {
   if (authHelpers.getUser(req)?.permission === 'admin') {
@@ -19,6 +27,7 @@ const authenticatedUser = (req, res, next) => {
 }
 
 module.exports = {
+  authJWT,
   authenticatedAdmin,
   authenticatedUser
 }

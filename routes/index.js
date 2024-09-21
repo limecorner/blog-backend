@@ -1,11 +1,10 @@
 const express = require('express')
 const { errorHandler } = require('../middleware/error-handler')
 const authLocal = require('../middleware/auth-local-strategy')
-const authJWT = require('../middleware/auth-jwt-strategy')
 
 const router = express.Router()
 
-const { authenticatedAdmin, authenticatedUser } = require('../middleware/auth')
+const { authJWT, authenticatedAdmin, authenticatedUser } = require('../middleware/auth')
 const admin = require('./modules/admin')
 const userController = require('../controllers/user-controller')
 const adminController = require('../controllers/admin-controller')

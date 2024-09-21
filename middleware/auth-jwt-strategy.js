@@ -19,6 +19,5 @@ const strategy = new JWTStrategy(jwtOptions, async (jwtPayload, cb) => {
 })
 
 passport.use(strategy)
-const authJWT = passport.authenticate('jwt', { session: false })
 
-module.exports = authJWT
+module.exports = passport
