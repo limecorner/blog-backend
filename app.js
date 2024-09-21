@@ -30,3 +30,5 @@ if (process.env.NODE_ENV !== 'production') {
     console.log('App is running on https://my-blog-backend.fly.dev')
   })
 }
+
+module.exports = app
