@@ -1,41 +1,31 @@
-# syntax = docker/dockerfile:1
+# 使用 Node.js 18 作為基礎映像
+FROM node:18
 
-# Adjust NODE_VERSION as desired
-ARG NODE_VERSION=18.16.0
-FROM node:${NODE_VERSION}-slim as base
-
-LABEL fly_launch_runtime="NodeJS"
-
-# NodeJS app lives here
+# 設定工作目錄
 WORKDIR /app
 
-# Set production environment
-ENV NODE_ENV=production
+# 複製 package.json 和 package-lock.json
+COPY package*.json ./
 
+# 安裝依賴
+RUN npm install
 
-# Throw-away build stage to reduce size of final image
-FROM base as build
+# 複製應用程式碼
+COPY . .
 
-# Install packages needed to build node modules
-RUN apt-get update -qq && \
-    apt-get install -y python-is-python3 pkg-config build-essential 
+# 設定環境變數
+ENV NODE_ENV=development
+ENV PORT=8080
+ENV JWT_SECRET=blogger
+# 資料庫環境變數
+ENV DB_HOST=host.docker.internal
+ENV DB_PORT=3306
+ENV DB_USERNAME=root
+ENV DB_PASSWORD=password
+ENV DB_DATABASE=blog
 
-# Install node modules
-COPY --link package.json package-lock.json .
-RUN npm install --production=false
+# 暴露端口
+EXPOSE 8080
 
-# Copy application code
-COPY --link . .
-
-# Remove development dependencies
-RUN npm prune --production
-
-
-# Final stage for app image
-FROM base
-
-# Copy built application
-COPY --from=build /app /app
-
-# Start the server by default, this can be overwritten at runtime
-CMD [ "npm", "run", "start" ]
+# 啟動應用程式
+CMD ["npm", "start"]

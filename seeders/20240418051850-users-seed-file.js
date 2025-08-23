@@ -17,7 +17,7 @@ module.exports = {
       bio: 'boss',
       photo: 'https://loremflickr.com/320/240/avatar',
       // permission: getRandomPermission(),
-      permission: 'admin',
+      permission: 'member',
       // role: 'admin',
       created_at: new Date(),
       updated_at: new Date()

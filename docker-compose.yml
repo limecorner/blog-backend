@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  # MySQL 資料庫服務
+  mysql:
+    image: mysql:8.0
+    container_name: blog-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: blog
+      MYSQL_USER: blog_user
+      MYSQL_PASSWORD: blog_password
+    ports:
+      - "13306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./migrations:/docker-entrypoint-initdb.d
+    networks:
+      - blog-network
+
+  # 後端應用程式服務
+  backend:
+    build: .
+    container_name: blog-backend
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      NODE_ENV: development
+      PORT: 8080
+      JWT_SECRET: blogger
+      # 資料庫環境變數 - 連接到本地 development 資料庫
+      DB_HOST: host.docker.internal
+      DB_PORT: 3306
+      DB_USERNAME: root
+      DB_PASSWORD: password
+      DB_DATABASE: blog
+    depends_on:
+      - mysql
+    networks:
+      - blog-network
+
+volumes:
+  mysql_data:
+
+networks:
+  blog-network:
+    driver: bridge

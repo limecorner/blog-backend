@@ -5,7 +5,13 @@ const path = require('path')
 const Sequelize = require('sequelize')
 const basename = path.basename(__filename)
 const env = process.env.NODE_ENV || 'development'
-const config = require(path.resolve(__dirname, '../config/config.json'))[env]
+// 優先使用 database.js 配置，如果不存在則使用 config.json
+let config
+try {
+  config = require(path.resolve(__dirname, '../config/database.js'))[env]
+} catch (error) {
+  config = require(path.resolve(__dirname, '../config/config.json'))[env]
+}
 const db = {}
 
 let sequelize
