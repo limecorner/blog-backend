@@ -13,17 +13,6 @@ RUN npm install
 # 複製應用程式碼
 COPY . .
 
-# 設定環境變數
-ENV NODE_ENV=development
-ENV PORT=8080
-ENV JWT_SECRET=blogger
-# 資料庫環境變數
-ENV DB_HOST=host.docker.internal
-ENV DB_PORT=3306
-ENV DB_USERNAME=root
-ENV DB_PASSWORD=password
-ENV DB_DATABASE=blog
-
 # 暴露端口
 EXPOSE 8080
 

@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  backend:
+    env_file:
+      - .env.production
+    environment:
+      # 生產環境特定配置
+      NODE_ENV: production
+    # 生產環境不暴露端口，使用反向代理
+    ports: []
+    # 添加健康檢查
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s

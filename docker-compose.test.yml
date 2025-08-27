@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  # MySQL 資料庫服務（測試環境）
+  mysql:
+    image: mysql:8.0
+    container_name: blog-mysql-test
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: blog_test
+    ports:
+      - "13306:3306"
+    volumes:
+      - mysql_test_data:/var/lib/mysql
+      - ./migrations:/docker-entrypoint-initdb.d
+    networks:
+      - blog-network
+
+  backend:
+    env_file:
+      - .env.test
+    environment:
+      # 測試環境特定配置
+      NODE_ENV: test
+    depends_on:
+      - mysql
+
+volumes:
+  mysql_test_data:
